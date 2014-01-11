@@ -8,7 +8,6 @@ use Assetic\Extension\Twig\TwigFormulaLoader;
 use Assetic\Factory\AssetFactory;
 use Assetic\Factory\LazyAssetManager;
 use Saxulum\AsseticTwig\Helper\Dumper;
-use Symfony\Component\Finder\Finder;
 
 class AsseticTwigProvider
 {
@@ -30,7 +29,7 @@ class AsseticTwigProvider
         });
 
         $container['twig'] = $container->share(
-            $container->extend('twig', function(\Twig_Environment $twig) use($container) {
+            $container->extend('twig', function (\Twig_Environment $twig) use ($container) {
                 $twig->addExtension(new AsseticExtension($container['assetic.asset.factory']));
 
                 return $twig;

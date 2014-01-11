@@ -1,4 +1,5 @@
 composer.lock
+/environment
 /vendor
 
 .idea

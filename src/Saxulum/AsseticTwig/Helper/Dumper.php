@@ -27,8 +27,8 @@ class Dumper
 
     /**
      * @param \Twig_Loader_Filesystem $loader
-     * @param LazyAssetManager $lam
-     * @param AssetWriter $aw
+     * @param LazyAssetManager        $lam
+     * @param AssetWriter             $aw
      */
     public function __construct(\Twig_Loader_Filesystem $loader, LazyAssetManager $lam, AssetWriter $aw)
     {
@@ -42,12 +42,12 @@ class Dumper
         $finder = new Finder();
         $twigNamespaces = $this->loader->getNamespaces();
 
-        foreach($twigNamespaces as $ns) {
-            if(count($this->loader->getPaths($ns)) > 0 ) {
+        foreach ($twigNamespaces as $ns) {
+            if (count($this->loader->getPaths($ns)) > 0 ) {
                 $iterator = $finder->files()->in($this->loader->getPaths($ns));
                 foreach ($iterator as $file) {
                     /** @var SplFileInfo $file */
-                    $resource = new TwigResource($this->loader, $file->getRelativePathname());
+                    $resource = new TwigResource($this->loader, '@' . $ns . '/' . $file->getRelativePathname());
                     $this->lam->addResource($resource, 'twig');
                 }
             }
