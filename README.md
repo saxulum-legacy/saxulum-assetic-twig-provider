@@ -26,9 +26,19 @@ Installation
 Through [Composer](http://getcomposer.org) as [saxulum/saxulum/saxulum-assetic-twig-provider][1].
 
 ``` {.php}
+$app->register(new TwigServiceProvider());
+
+$app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem',
+    function (\Twig_Loader_Filesystem $twigLoaderFilesystem) {
+        $twigLoaderFilesystem->addPath('/path/to/the/views', 'SomeNamespace');
+
+        return $twigLoaderFilesystem;
+    }
+));
+
 $app->register(new AsseticTwigProvider(), array(
-    'assetic.asset.root' => 'path/to/project/root',
-    'assetic.asset.asset_root' => 'path/to/asset/root',
+    'assetic.asset.root' => '/path/to/project/root',
+    'assetic.asset.asset_root' => '/path/to/asset/root',
 ));
 ```
 
