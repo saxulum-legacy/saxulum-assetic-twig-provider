@@ -21,9 +21,11 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
 
         $app->register(new TwigServiceProvider());
 
+        $twigPath = $this->getTwigPath();
+
         $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem',
-            function (\Twig_Loader_Filesystem $twigLoaderFilesystem) {
-                $twigLoaderFilesystem->addPath($this->getTwigPath(), 'SaxulumAsseticTwig');
+            function (\Twig_Loader_Filesystem $twigLoaderFilesystem) use ($twigPath) {
+                $twigLoaderFilesystem->addPath($twigPath, 'SaxulumAsseticTwig');
 
                 return $twigLoaderFilesystem;
             }
