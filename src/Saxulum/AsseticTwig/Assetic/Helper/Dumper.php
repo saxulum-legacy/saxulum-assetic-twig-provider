@@ -53,6 +53,20 @@ class Dumper
             }
         }
 
-        $this->aw->writeManagerAssets($this->lam);
+        foreach ($this->lam->getNames() as $name) {
+            $asset = $this->lam->get($name);
+            $formula = $this->lam->getFormula($name);
+
+            $debug   = isset($formula[2]['debug'])   ? $formula[2]['debug']   : $this->lam->isDebug();
+            $combine = isset($formula[2]['combine']) ? $formula[2]['combine'] : null;
+
+            if (null !== $combine ? !$combine : $debug) {
+                foreach ($asset as $leaf) {
+                    $this->aw->writeAsset($leaf);
+                }
+            } else {
+                $this->aw->writeAsset($asset);
+            }
+        }
     }
 }
