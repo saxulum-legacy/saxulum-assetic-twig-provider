@@ -1,6 +1,6 @@
 <?php
 
-namespace Saxulum\AsseticTwig\Helper;
+namespace Saxulum\AsseticTwig\Assetic\Helper;
 
 use Assetic\AssetWriter;
 use Assetic\Extension\Twig\TwigResource;
