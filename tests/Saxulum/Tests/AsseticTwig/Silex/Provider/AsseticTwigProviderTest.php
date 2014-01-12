@@ -74,7 +74,7 @@ EOT;
     public function testDump()
     {
         $app = new Application();
-        $app['debug'] = true;
+        $app['debug'] = false;
 
         $app->register(new TwigServiceProvider());
 
