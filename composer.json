@@ -13,6 +13,7 @@
         "php": ">=5.3.3",
         "kriswallsmith/assetic": "~1.1",
         "pimple/pimple": "~1.0",
+        "saxulum/saxulum-console": "~1.0.0",
         "symfony/finder": "~2.3",
         "symfony/http-foundation": "~2.3",
         "twig/twig": "~1.2"

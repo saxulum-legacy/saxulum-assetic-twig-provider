@@ -14,6 +14,8 @@ use Assetic\Filter\ScssphpFilter;
 use Assetic\FilterManager;
 use Saxulum\AsseticTwig\Assetic\Filter\CssCopyFileFilter;
 use Saxulum\AsseticTwig\Assetic\Helper\Dumper;
+use Saxulum\AsseticTwig\Command\AsseticDumpCommand;
+use Symfony\Component\Console\Application as ConsoleApplication;
 
 class AsseticTwigProvider
 {
@@ -102,6 +104,14 @@ class AsseticTwigProvider
                 $twig->addExtension(new AsseticExtension($container['assetic.asset.factory']));
 
                 return $twig;
+            })
+        );
+
+        $container['console'] = $container->share(
+            $container->extend('console', function (ConsoleApplication $console) use ($container) {
+                $console->add(new AsseticDumpCommand(null, $container));
+
+                return $console;
             })
         );
     }
