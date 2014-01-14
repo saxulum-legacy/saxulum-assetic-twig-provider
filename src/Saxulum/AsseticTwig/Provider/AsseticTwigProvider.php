@@ -107,12 +107,15 @@ class AsseticTwigProvider
             })
         );
 
-        $container['console'] = $container->share(
-            $container->extend('console', function (ConsoleApplication $console) use ($container) {
-                $console->add(new AsseticDumpCommand(null, $container));
+        if(isset($container['console.commands'])) {
+            $container['console.commands'] = $container->share(
+                $container->extend('console.commands', function ($commands) use ($container) {
+                    $commands[] = new AsseticDumpCommand(null, $container);
 
-                return $console;
-            })
-        );
+                    return $commands;
+                })
+            );
+        }
+
     }
 }

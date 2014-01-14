@@ -13,7 +13,6 @@
         "php": ">=5.3.3",
         "kriswallsmith/assetic": "~1.1",
         "pimple/pimple": "~1.0",
-        "saxulum/saxulum-console": "~1.0.0",
         "symfony/finder": "~2.3",
         "symfony/http-foundation": "~2.3",
         "twig/twig": "~1.2"
@@ -31,7 +30,8 @@
         "cssmin/cssmin": "~3.0.1",
         "jsmin/jsmin": "~2.1.7",
         "leafo/lessphp": "~0.4.0",
-        "leafo/scssphp": "~0.0.9"
+        "leafo/scssphp": "~0.0.9",
+        "saxulum/saxulum-console": "~1.1.0"
     },
     "repositories": [
         {
