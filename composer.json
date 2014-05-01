@@ -31,7 +31,7 @@
         "jsmin/jsmin": "~2.1.7",
         "leafo/lessphp": "~0.4.0",
         "leafo/scssphp": "~0.0.9",
-        "saxulum/saxulum-console": "~1.1.0"
+        "saxulum/saxulum-console": "~2.0"
     },
     "repositories": [
         {

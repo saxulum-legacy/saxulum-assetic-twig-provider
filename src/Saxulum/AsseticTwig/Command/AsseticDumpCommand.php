@@ -3,11 +3,11 @@
 namespace Saxulum\AsseticTwig\Command;
 
 use Saxulum\AsseticTwig\Assetic\Helper\Dumper;
-use Saxulum\Console\Command\AbstractCommand;
+use Saxulum\Console\Command\AbstractPimpleCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class AsseticDumpCommand extends AbstractCommand
+class AsseticDumpCommand extends AbstractPimpleCommand
 {
     protected function configure()
     {
