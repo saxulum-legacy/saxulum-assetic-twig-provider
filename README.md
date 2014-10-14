@@ -45,7 +45,7 @@ $app->register(new AsseticTwigProvider(), array(
 Configuration
 -------------
 
-This filter are preconfigured:
+This filter are preconfigured, and active per default:
 
  * csscopyfile
  * lessphp
