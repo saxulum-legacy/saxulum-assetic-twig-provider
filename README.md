@@ -16,7 +16,7 @@ Requirements
 ------------
 
  * PHP 5.3+
- * Kriswallsmith's Assets Framework (Assetic) 1.1+
+ * Kriswallsmith's Assets Framework (Assetic) 1.2+
  * Symfony Finder Component 2.3+
  * Twig 1.2+
 
@@ -42,6 +42,42 @@ $app->register(new AsseticTwigProvider(), array(
 ));
 ```
 
+Configuration
+-------------
+
+This filter are preconfigured:
+
+ * csscopyfile
+ * lessphp
+ * scssphp
+ * cssmin
+ * csscompress
+ * jsmin
+
+If you want to disable a default filter:
+
+``` {.php}
+$app['assetic.filters'] = $container->share(
+    $app->extend('assetic.filters', function ($filters) use ($app) {
+        $filters['cssmin'] = false;
+        return $filters;
+    })
+);
+```
+
+If you want to build your own filterinstances array (this IGNORES the configuration)
+
+``` {.php}
+$container['assetic.filterinstances'] = $container->share(
+    $app->extend('assetic.filterinstances', function ($filterInstances) use ($container) {
+        $filterInstances = array();
+        $filterInstances['lessphp'] = new LessphpFilter();
+
+        return $filterInstances;
+    })
+);
+```
+
 Usage
 -----
 
@@ -51,6 +87,7 @@ CSS example
 {% stylesheets
     'relative/from/path/to/project/root/*.css'
     output='relative/from/path/to/asset/root/css/test.css'
+    filter='cssmin'
 %}
     {{ asset_url }}
 {% endstylesheets %}
@@ -62,6 +99,7 @@ JS example
 {% javascripts
     'relative/from/path/to/project/root/*.js'
     output='relative/from/path/to/asset/root/css/test.js'
+    filter='jsmin'
 %}
     {{ asset_url }}
 {% endjavascripts %}

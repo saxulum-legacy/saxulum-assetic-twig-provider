@@ -46,40 +46,51 @@ class AsseticTwigProvider
             'jsmin' => true,
         );
 
-        $container['assetic.filters'] = array();
+        $container['assetic.filters'] = $container->share(function () use ($container) {
+            return array();
+        });
+
+        $container['assetic.filterinstances'] = $container->share(function () use ($container) {
+            $filterInstances = array();
+
+            $filterConfig = array_merge($container['assetic.filters.default'], $container['assetic.filters']);
+
+            if ($filterConfig['csscopyfile']) {
+                $filterInstances['csscopyfile'] = new CssCopyFileFilter(
+                    $container['assetic.asset.asset_root']
+                );
+            }
+
+            if ($filterConfig['lessphp'] && class_exists('\lessc')) {
+                $filterInstances['lessphp'] = new LessphpFilter();
+            }
+
+            if ($filterConfig['scssphp'] && class_exists('\scssc')) {
+                $filterInstances['scssphp'] = new ScssphpFilter();
+            }
+
+            if ($filterConfig['cssmin'] && class_exists('\CssMin')) {
+                $filterInstances['cssmin'] = new CssMinFilter();
+            }
+
+            if ($filterConfig['csscompress'] && class_exists('\Minify_CSS_Compressor')) {
+                $filterInstances['csscompress'] = new MinifyCssCompressorFilter();
+            }
+
+            if ($filterConfig['jsmin'] && class_exists('\JSMin')) {
+                $filterInstances['jsmin'] = new JSMinFilter();
+            }
+
+            return $filterInstances;
+        });
 
         $container['assetic.filter_manager'] = $container->share(function () use ($container) {
             $filterManager = new FilterManager();
 
-            $filterConfig = array_merge(
-                $container['assetic.filters.default'],
-                $container['assetic.filters']
-            );
+            $filters = $container['assetic.filterinstances'];
 
-            if ($filterConfig['csscopyfile']) {
-                $filterManager->set('csscopyfile', new CssCopyFileFilter(
-                    $container['assetic.asset.asset_root']
-                ));
-            }
-
-            if ($filterConfig['lessphp'] && class_exists('\lessc')) {
-                $filterManager->set('lessphp', new LessphpFilter());
-            }
-
-            if ($filterConfig['scssphp'] && class_exists('\scssc')) {
-                $filterManager->set('scssphp', new ScssphpFilter());
-            }
-
-            if ($filterConfig['cssmin'] && class_exists('\CssMin')) {
-                $filterManager->set('cssmin', new CssMinFilter());
-            }
-
-            if ($filterConfig['csscompress'] && class_exists('\Minify_CSS_Compressor')) {
-                $filterManager->set('csscompress', new MinifyCssCompressorFilter());
-            }
-
-            if ($filterConfig['jsmin'] && class_exists('\JSMin')) {
-                $filterManager->set('jsmin', new JSMinFilter());
+            foreach ($filters as $alias => $filter) {
+                $filterManager->set($alias, $filter);
             }
 
             return $filterManager;
