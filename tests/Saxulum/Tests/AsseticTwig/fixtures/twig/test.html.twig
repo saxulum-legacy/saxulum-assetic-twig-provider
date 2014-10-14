@@ -1,0 +1,23 @@
+{% stylesheets 'css/test.css' filter='csscopyfile' output='css/test-copyfile.css' %}
+    {{ asset_url }}
+{% endstylesheets %}
+
+{% stylesheets 'less/test.less' filter='lessphp' output='css/test-less.css' %}
+    {{ asset_url }}
+{% endstylesheets %}
+
+{% stylesheets 'scss/test.scss' filter='scssphp' output='css/test-scss.css' %}
+    {{ asset_url }}
+{% endstylesheets %}
+
+{% stylesheets 'css/test.css' filter='cssmin' output='css/test-cssmin.css' %}
+    {{ asset_url }}
+{% endstylesheets %}
+
+{% stylesheets 'css/test.css' filter='csscompress' output='css/test-csscompress.css' %}
+    {{ asset_url }}
+{% endstylesheets %}
+
+{% javascripts 'js/test.js' filter='jsmin' output='js/test.js' %}
+    {{ asset_url }}
+{% endjavascripts %}

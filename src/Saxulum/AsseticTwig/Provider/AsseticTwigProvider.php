@@ -10,12 +10,12 @@ use Assetic\Factory\LazyAssetManager;
 use Assetic\Filter\CssMinFilter;
 use Assetic\Filter\JSMinFilter;
 use Assetic\Filter\LessphpFilter;
+use Assetic\Filter\MinifyCssCompressorFilter;
 use Assetic\Filter\ScssphpFilter;
 use Assetic\FilterManager;
 use Saxulum\AsseticTwig\Assetic\Filter\CssCopyFileFilter;
 use Saxulum\AsseticTwig\Assetic\Helper\Dumper;
 use Saxulum\AsseticTwig\Command\AsseticDumpCommand;
-use Symfony\Component\Console\Application as ConsoleApplication;
 
 class AsseticTwigProvider
 {
@@ -42,6 +42,7 @@ class AsseticTwigProvider
             'lessphp' => true,
             'scssphp' => true,
             'cssmin' => true,
+            'csscompress' => true,
             'jsmin' => true,
         );
 
@@ -71,6 +72,10 @@ class AsseticTwigProvider
 
             if ($filterConfig['cssmin'] && class_exists('\CssMin')) {
                 $filterManager->set('cssmin', new CssMinFilter());
+            }
+
+            if ($filterConfig['csscompress'] && class_exists('\Minify_CSS_Compressor')) {
+                $filterManager->set('csscompress', new MinifyCssCompressorFilter());
             }
 
             if ($filterConfig['jsmin'] && class_exists('\JSMin')) {
@@ -107,7 +112,7 @@ class AsseticTwigProvider
             })
         );
 
-        if(isset($container['console.commands'])) {
+        if (isset($container['console.commands'])) {
             $container['console.commands'] = $container->share(
                 $container->extend('console.commands', function ($commands) use ($container) {
                     $commands[] = new AsseticDumpCommand(null, $container);

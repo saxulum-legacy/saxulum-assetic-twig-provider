@@ -11,7 +11,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "kriswallsmith/assetic": "~1.1",
+        "kriswallsmith/assetic": "~1.2",
         "pimple/pimple": "~1.0",
         "symfony/finder": "~2.3",
         "symfony/http-foundation": "~2.3",
@@ -21,16 +21,16 @@
         "phpunit/phpunit": "3.7.*",
         "cssmin/cssmin": "~3.0.1",
         "cilex/cilex": "~1.0",
-        "jsmin/jsmin": "~2.1.7",
-        "leafo/lessphp": "~0.4.0",
-        "leafo/scssphp": "~0.0.9",
+        "mrclay/minify": "~2.2.0",
+        "oyejorge/less.php": "~1.7",
+        "leafo/scssphp": "~0.1",
         "silex/silex": "~1.1"
     },
     "suggest": {
         "cssmin/cssmin": "~3.0.1",
-        "jsmin/jsmin": "~2.1.7",
-        "leafo/lessphp": "~0.4.0",
-        "leafo/scssphp": "~0.0.9",
+        "mrclay/minify": "~2.2.0",
+        "oyejorge/less.php": "~1.7",
+        "leafo/scssphp": "~0.1",
         "saxulum/saxulum-console": "~2.0"
     },
     "repositories": [
@@ -41,15 +41,6 @@
                 "version": "3.0.1",
                 "dist": { "url": "http://cssmin.googlecode.com/files/cssmin-v3.0.1.php", "type": "file" },
                 "autoload": { "classmap": [ "cssmin-v3.0.1.php" ] }
-            }
-        },
-        {
-            "type": "package",
-            "package": {
-                "name": "jsmin/jsmin",
-                "version": "2.1.7",
-                "dist": { "url": "https://raw.github.com/mrclay/minify/2.1.7/min/lib/JSMin.php", "type": "file" },
-                "autoload": { "classmap": [ "JSMin.php" ] }
             }
         }
     ],

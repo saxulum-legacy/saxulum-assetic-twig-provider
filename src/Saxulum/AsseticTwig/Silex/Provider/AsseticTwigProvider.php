@@ -20,7 +20,7 @@ class AsseticTwigProvider implements ServiceProviderInterface
      */
     public function register(Application $app)
     {
-        $pimpleServiceProvider = new BaseAsseticTwigProvider;
+        $pimpleServiceProvider = new BaseAsseticTwigProvider();
         $pimpleServiceProvider->register($app);
     }
 }
