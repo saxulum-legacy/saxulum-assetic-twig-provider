@@ -65,13 +65,12 @@ $app['assetic.filters'] = $container->share(
 );
 ```
 
-If you want to build your own filterinstances array (this IGNORES the configuration)
+If you want to add more filters, which aren't preconfigured:
 
 ``` {.php}
 $container['assetic.filterinstances'] = $container->share(
     $app->extend('assetic.filterinstances', function ($filterInstances) use ($container) {
-        $filterInstances = array();
-        $filterInstances['lessphp'] = new LessphpFilter();
+        $filterInstances['jsminplus'] = new JSMinPlusFilter();
 
         return $filterInstances;
     })
