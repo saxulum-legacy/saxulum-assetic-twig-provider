@@ -13,29 +13,31 @@ use Assetic\Filter\LessphpFilter;
 use Assetic\Filter\MinifyCssCompressorFilter;
 use Assetic\Filter\ScssphpFilter;
 use Assetic\FilterManager;
+use Pimple\Container;
+use Pimple\ServiceProviderInterface;
 use Saxulum\AsseticTwig\Assetic\Filter\CssCopyFileFilter;
 use Saxulum\AsseticTwig\Assetic\Helper\Dumper;
 use Saxulum\AsseticTwig\Command\AsseticDumpCommand;
 
-class AsseticTwigProvider
+class AsseticTwigProvider implements ServiceProviderInterface
 {
     /**
-     * @param \Pimple $container
+     * @param Container $container
      */
-    public function register(\Pimple $container)
+    public function register(Container $container)
     {
         $container['assetic.asset.root'] = '';
 
         $container['assetic.asset.asset_root'] = '';
 
-        $container['assetic.asset.factory'] = $container->share(function () use ($container) {
+        $container['assetic.asset.factory'] = function () use ($container) {
             $assetFactory = new AssetFactory($container['assetic.asset.root']);
             $assetFactory->setDefaultOutput($container['assetic.asset.asset_root']);
             $assetFactory->setDebug(isset($container['debug']) ? $container['debug'] : false);
             $assetFactory->setFilterManager($container['assetic.filter_manager']);
 
             return $assetFactory;
-        });
+        };
 
         $container['assetic.filters.default'] = array(
             'csscopyfile' => true,
@@ -46,11 +48,11 @@ class AsseticTwigProvider
             'jsmin' => true,
         );
 
-        $container['assetic.filters'] = $container->share(function () use ($container) {
+        $container['assetic.filters'] = function () use ($container) {
             return array();
-        });
+        };
 
-        $container['assetic.filterinstances'] = $container->share(function () use ($container) {
+        $container['assetic.filterinstances'] = function () use ($container) {
             $filterInstances = array();
 
             $filterConfig = array_merge($container['assetic.filters.default'], $container['assetic.filters']);
@@ -82,9 +84,9 @@ class AsseticTwigProvider
             }
 
             return $filterInstances;
-        });
+        };
 
-        $container['assetic.filter_manager'] = $container->share(function () use ($container) {
+        $container['assetic.filter_manager'] = function () use ($container) {
             $filterManager = new FilterManager();
 
             $filters = $container['assetic.filterinstances'];
@@ -94,44 +96,39 @@ class AsseticTwigProvider
             }
 
             return $filterManager;
-        });
+        };
 
-        $container['assetic.asset.manager'] = $container->share(function () use ($container) {
+        $container['assetic.asset.manager'] = function () use ($container) {
             $assetManager = new LazyAssetManager($container['assetic.asset.factory']);
             $assetManager->setLoader('twig', new TwigFormulaLoader($container['twig']));
 
             return $assetManager;
-        });
+        };
 
-        $container['assetic.asset.writer'] = $container->share(function () use ($container) {
+        $container['assetic.asset.writer'] = function () use ($container) {
             return new AssetWriter($container['assetic.asset.asset_root']);
-        });
+        };
 
-        $container['assetic.asset.dumper'] = $container->share(function () use ($container) {
+        $container['assetic.asset.dumper'] = function () use ($container) {
             return new Dumper(
                 $container['twig.loader.filesystem'],
                 $container['assetic.asset.manager'],
                 $container['assetic.asset.writer']
             );
+        };
+
+        $container['twig'] = $container->extend('twig', function (\Twig_Environment $twig) use ($container) {
+            $twig->addExtension(new AsseticExtension($container['assetic.asset.factory']));
+
+            return $twig;
         });
 
-        $container['twig'] = $container->share(
-            $container->extend('twig', function (\Twig_Environment $twig) use ($container) {
-                $twig->addExtension(new AsseticExtension($container['assetic.asset.factory']));
-
-                return $twig;
-            })
-        );
-
         if (isset($container['console.commands'])) {
-            $container['console.commands'] = $container->share(
-                $container->extend('console.commands', function ($commands) use ($container) {
-                    $commands[] = new AsseticDumpCommand(null, $container);
+            $container['console.commands'] = $container->extend('console.commands', function ($commands) use ($container) {
+                $commands[] = new AsseticDumpCommand(null, $container);
 
-                    return $commands;
-                })
-            );
+                return $commands;
+            });
         }
-
     }
 }

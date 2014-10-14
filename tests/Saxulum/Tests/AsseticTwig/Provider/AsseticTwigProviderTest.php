@@ -1,9 +1,9 @@
 <?php
 
-namespace Saxulum\Tests\AsseticTwig\Silex\Provider;
+namespace Saxulum\Tests\AsseticTwig\Provider;
 
-use Saxulum\AsseticTwig\Silex\Provider\AsseticTwigProvider;
-use Silex\Application;
+use Pimple\Container;
+use Saxulum\AsseticTwig\Provider\AsseticTwigProvider;
 use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -12,27 +12,27 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function testDump()
     {
-        $app = new Application();
-        $app['debug'] = false;
+        $container = new Container();
+        $container['debug'] = false;
 
-        $app->register(new TwigServiceProvider());
+        $container->register(new TwigServiceProvider());
 
         $twigPath = $this->getTwigPath();
 
-        $app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem',
+        $container['twig.loader.filesystem'] = $container->extend('twig.loader.filesystem',
             function (\Twig_Loader_Filesystem $twigLoaderFilesystem) use ($twigPath) {
                 $twigLoaderFilesystem->addPath($twigPath, 'SaxulumAsseticTwig');
 
                 return $twigLoaderFilesystem;
             }
-        ));
+        );
 
-        $app->register(new AsseticTwigProvider(), array(
+        $container->register(new AsseticTwigProvider(), array(
             'assetic.asset.root' => $this->getFixturesPath(),
             'assetic.asset.asset_root' => $this->getAssetPath()
         ));
 
-        $app['assetic.asset.dumper']->dump();
+        $container['assetic.asset.dumper']->dump();
 
         $this->fileComparsion('css/test-copyfile.css');
         $this->fileComparsion('image/test.png');
@@ -98,17 +98,17 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
 
     protected function getFixturesPath()
     {
-        return __DIR__ . '/../../fixtures';
+        return __DIR__ . '/../fixtures';
     }
 
     protected function getExpectsPath()
     {
-        return __DIR__ . '/../../expects';
+        return __DIR__ . '/../expects';
     }
 
     protected function getAssetPath()
     {
-        return __DIR__ . '/../../../../../../assets';
+        return __DIR__ . '/../../../../../assets';
     }
 
     protected function getTwigPath()

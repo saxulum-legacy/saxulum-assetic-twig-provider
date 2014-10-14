@@ -17,6 +17,7 @@ Requirements
 
  * PHP 5.3+
  * Kriswallsmith's Assets Framework (Assetic) 1.2+
+ * Pimple >=2.1,<4
  * Symfony Finder Component 2.3+
  * Twig 1.2+
 
@@ -26,17 +27,17 @@ Installation
 Through [Composer](http://getcomposer.org) as [saxulum/saxulum/saxulum-assetic-twig-provider][1].
 
 ``` {.php}
-$app->register(new TwigServiceProvider());
+$container->register(new TwigServiceProvider());
 
-$app['twig.loader.filesystem'] = $app->share($app->extend('twig.loader.filesystem',
+$container['twig.loader.filesystem'] = $container->extend('twig.loader.filesystem',
     function (\Twig_Loader_Filesystem $twigLoaderFilesystem) {
         $twigLoaderFilesystem->addPath('/path/to/the/views', 'SomeNamespace');
 
         return $twigLoaderFilesystem;
     }
-));
+);
 
-$app->register(new AsseticTwigProvider(), array(
+$container->register(new AsseticTwigProvider(), array(
     'assetic.asset.root' => '/path/to/project/root',
     'assetic.asset.asset_root' => '/path/to/asset/root',
 ));
@@ -57,23 +58,23 @@ This filter are preconfigured, and active per default:
 If you want to disable a default filter:
 
 ``` {.php}
-$app['assetic.filters'] = $container->share(
-    $app->extend('assetic.filters', function ($filters) use ($app) {
+$container['assetic.filters'] = $container->extend('assetic.filters',
+    function ($filters) use ($container) {
         $filters['cssmin'] = false;
         return $filters;
-    })
+    }
 );
 ```
 
 If you want to add more filters, which aren't preconfigured:
 
 ``` {.php}
-$container['assetic.filterinstances'] = $container->share(
-    $app->extend('assetic.filterinstances', function ($filterInstances) use ($container) {
+$container['assetic.filterinstances'] = $container->extend('assetic.filterinstances',
+    function ($filterInstances) use ($container) {
         $filterInstances['jsminplus'] = new JSMinPlusFilter();
 
         return $filterInstances;
-    })
+    }
 );
 ```
 
