@@ -10,7 +10,7 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.3,<8.0",
         "kriswallsmith/assetic": "~1.2",
         "pimple/pimple": "~1.0",
         "symfony/finder": "~2.3",
