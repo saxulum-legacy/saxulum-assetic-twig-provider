@@ -33,6 +33,7 @@
         "mrclay/minify": "~2.2.0",
         "oyejorge/less.php": "~1.7",
         "psr/log": "~1.0",
+        "saxulum/saxulum-console": "~3.1",
         "silex/api": "~2.0@dev",
         "silex/providers": "~2.0@dev"
     },
