@@ -100,7 +100,7 @@ class AsseticTwigProvider implements ServiceProviderInterface
 
         $container['assetic.asset.manager'] = function () use ($container) {
             $assetManager = new LazyAssetManager($container['assetic.asset.factory']);
-            $assetManager->setLoader('twig', new TwigFormulaLoader($container['twig']));
+            $assetManager->setLoader('twig', new TwigFormulaLoader($container['twig'], $container['logger']));
 
             return $assetManager;
         };
@@ -124,11 +124,14 @@ class AsseticTwigProvider implements ServiceProviderInterface
         });
 
         if (isset($container['console.commands'])) {
-            $container['console.commands'] = $container->extend('console.commands', function ($commands) use ($container) {
-                $commands[] = new AsseticDumpCommand(null, $container);
+            $container['console.commands'] = $container->extend(
+                'console.commands',
+                function ($commands) use ($container) {
+                    $commands[] = new AsseticDumpCommand(null, $container);
 
-                return $commands;
-            });
+                    return $commands;
+                }
+            );
         }
     }
 }
