@@ -42,6 +42,10 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
         $dumper = $container['assetic.asset.dumper'];
         $dumper->dump();
 
+        if(count($logger->entries)) {
+            var_dump($logger->entries);
+        }
+
         $this->assertCount(0, $logger->entries);
 
         $this->fileComparsion('css/test-copyfile.css');
