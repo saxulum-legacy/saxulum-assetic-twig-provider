@@ -2,6 +2,8 @@
 
 namespace Saxulum\Tests\AsseticTwig\Silex\Provider;
 
+use Psr\Log\NullLogger;
+use Saxulum\AsseticTwig\Assetic\Helper\Dumper;
 use Saxulum\AsseticTwig\Silex\Provider\AsseticTwigProvider;
 use Silex\Application;
 use Silex\Provider\TwigServiceProvider;
@@ -14,6 +16,9 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app['debug'] = false;
+
+        $logger = $this->getLogger();
+        $app['logger'] = $logger;
 
         $app->register(new TwigServiceProvider());
 
@@ -32,7 +37,15 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
             'assetic.asset.asset_root' => $this->getAssetPath()
         ));
 
-        $app['assetic.asset.dumper']->dump();
+        /** @var Dumper $dumper */
+        $dumper = $app['assetic.asset.dumper'];
+        $dumper->dump();
+
+        if(count($logger->entries)) {
+            var_dump($logger->entries);
+        }
+
+        $this->assertCount(0, $logger->entries);
 
         $this->fileComparsion('css/test-copyfile.css');
         $this->fileComparsion('image/test.png');
@@ -114,5 +127,32 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
     protected function getTwigPath()
     {
         return $this->getFixturesPath() . '/twig';
+    }
+
+    /**
+     * @return NullLogger|\PHPUnit_Framework_MockObject_MockObject|\stdClass
+     */
+    protected function getLogger()
+    {
+        /** @var NullLogger|\PHPUnit_Framework_MockObject_MockObject|\stdClass $logger */
+        $logger = $this->getMockBuilder(NullLogger::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['error'])
+            ->getMock();
+
+        $logger->entries = array();
+
+        $logger->expects($this->any())
+            ->method('error')
+            ->will($this->returnCallback(function($message, array $context = array()) use ($logger) {
+                $logger->entries[] = array(
+                    'level' => 'error',
+                    'message' => $message,
+                    'context' => $context
+                );
+            }))
+        ;
+
+        return $logger;
     }
 }

@@ -98,7 +98,7 @@ class AsseticTwigProvider
 
         $container['assetic.asset.manager'] = $container->share(function () use ($container) {
             $assetManager = new LazyAssetManager($container['assetic.asset.factory']);
-            $assetManager->setLoader('twig', new TwigFormulaLoader($container['twig']));
+            $assetManager->setLoader('twig', new TwigFormulaLoader($container['twig'], $container['logger']));
 
             return $assetManager;
         });

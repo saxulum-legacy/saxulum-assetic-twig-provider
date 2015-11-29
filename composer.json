@@ -21,16 +21,20 @@
         "phpunit/phpunit": "3.7.*",
         "cssmin/cssmin": "~3.0.1",
         "cilex/cilex": "~1.0",
+        "leafo/scssphp": "v0.4.0",
         "mrclay/minify": "~2.2.0",
         "oyejorge/less.php": "~1.7",
-        "leafo/scssphp": "~0.1",
+        "psr/log": "~1.0",
         "silex/silex": "~1.1"
     },
     "suggest": {
         "cssmin/cssmin": "~3.0.1",
+        "cilex/cilex": "~1.0",
+        "leafo/scssphp": "v0.4.0",
         "mrclay/minify": "~2.2.0",
         "oyejorge/less.php": "~1.7",
-        "leafo/scssphp": "~0.1",
+        "psr/log": "~1.0",
+        "silex/silex": "~1.1",
         "saxulum/saxulum-console": "~2.0"
     },
     "repositories": [
