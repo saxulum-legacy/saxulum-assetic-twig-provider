@@ -135,7 +135,7 @@ class AsseticTwigProviderTest extends \PHPUnit_Framework_TestCase
     protected function getLogger()
     {
         /** @var NullLogger|\PHPUnit_Framework_MockObject_MockObject|\stdClass $logger */
-        $logger = $this->getMockBuilder(NullLogger::class)
+        $logger = $this->getMockBuilder('Psr\Log\NullLogger')
             ->disableOriginalConstructor()
             ->setMethods(['error'])
             ->getMock();
