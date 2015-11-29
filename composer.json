@@ -20,18 +20,19 @@
     "require-dev": {
         "phpunit/phpunit": "~4.1",
         "cssmin/cssmin": "~3.0.1",
+        "leafo/scssphp": "v0.4",
         "mrclay/minify": "~2.2.0",
         "oyejorge/less.php": "~1.7",
-        "leafo/scssphp": "~0.1",
+        "psr/log": "~1.0",
         "silex/api": "~2.0@dev",
         "silex/providers": "~2.0@dev"
     },
     "suggest": {
         "cssmin/cssmin": "~3.0.1",
+        "leafo/scssphp": "v0.4",
         "mrclay/minify": "~2.2.0",
         "oyejorge/less.php": "~1.7",
-        "leafo/scssphp": "~0.1",
-        "saxulum/saxulum-console": "~2.0",
+        "psr/log": "~1.0",
         "silex/api": "~2.0@dev",
         "silex/providers": "~2.0@dev"
     },
