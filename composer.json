@@ -50,5 +50,6 @@
     ],
     "autoload": {
         "psr-0": { "Saxulum\\AsseticTwig": "src/" }
-    }
+    },
+    "abandoned": true
 }
